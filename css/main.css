@@ -94,6 +94,15 @@ body {
   color: #2b2b2b;
 }
 
+.confim-edit {
+  display: inline-block;
+}
+
+.form-control {
+  display: inline-block;
+  width: 70%;
+}
+
 .none {
   display: none !important;
 }
@@ -116,3 +125,5 @@ body {
 .copyright-link {
   color: #ffbb76;
 }
+
+

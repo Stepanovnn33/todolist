@@ -18,6 +18,8 @@ form.addEventListener('submit', addTask)
 
 tasksList.addEventListener('click', deleteTask);
 
+tasksList.addEventListener('click', editTask);
+
 tasksList.addEventListener('click', doneTask);
 
 // Функции
@@ -89,6 +91,34 @@ function deleteTask(event) {
 }
 
 
+// Функция редактирования задачи
+
+function editTask(event) {
+    if(event.target.dataset.action !== "edit") return;
+
+    const parentNode = event.target.closest(".list-group-item");
+    const taskTitle = parentNode.querySelector(".task-title");
+    const taskTitleText = taskTitle.textContent;
+    const id = parentNode.id;
+
+    const task = tasks.find((task) => task.id == id);
+    const index = tasks.indexOf(task);
+    
+
+    const editInputHTML = `<input type="text" class="form-control" id="taskInputEdit" value="${task.text}" required> <span id="confim-edit" class="confim-edit" data-action="edit-ok">ОК</span>`;
+    taskTitle.innerHTML = editInputHTML;
+
+    parentNode.addEventListener('click', (event) => {
+        if(event.target.dataset.action !== "edit-ok") return;
+        const editInput = document.querySelector("#taskInputEdit");
+        taskTitle.innerHTML = editInput.value;
+        tasks[index].text = editInput.value;
+        saveToLocalStorage();
+    })
+
+}
+
+
 // Функция для завершенной задачи
 
 function doneTask(event) {
@@ -149,11 +179,15 @@ function renderTask(task){
                     <span class="${cssClass}">${task.text}</span>
                     <div class="task-item__buttons">
                         <button type="button" data-action="done" class="btn-action">
-                            <img src="./img/tick.svg" alt="Done" width="18" height="18">
+                            <img src="./img/tick.svg" alt="done" width="18" height="18">
+                        </button>
+                        <button type="button" data-action="edit" class="btn-action">
+                            <img src="./img/edit.png" alt="edit" width="18" height="18">
                         </button>
                         <button type="button" data-action="delete" class="btn-action">
-                            <img src="./img/cross.svg" alt="Done" width="18" height="18">
+                            <img src="./img/cross.svg" alt="delete" width="18" height="18">
                         </button>
+                        
                     </div>
                 </li>
     `;
